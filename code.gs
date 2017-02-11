@@ -1,8 +1,8 @@
 function main() {
- var html = HtmlService.createHtmlOutputFromFile('Index');
+ var html = HtmlService.createHtmlOutputFromFile('index');
   html.setWidth(250);
   html.setHeight(310);
-  SpreadsheetApp.getUi().showModelessDialog(html, '試算表抽獎程式');
+  SpreadsheetApp.getUi().showModelessDialog(html, '表單抽獎程式');
 }
 
 function setUserData(data) {

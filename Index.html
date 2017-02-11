@@ -18,11 +18,11 @@
     <p></p>
     <div class="inline form-group">
       <label for="min">從第</label>
-      <input type="text" id="min" value="1" style="width: 60px;"/>
+      <input type="text" id="min" value="2" style="width: 60px;"/>
     </div>
     <div class="inline form-group">
       <label for="max">到第</label>
-      <input type="text" id="max" value="10" style="width: 60px;"/>
+      <input type="text" id="max" value="100" style="width: 60px;"/>
     </div>
     <div class="inline form-group">
       <label id="col" for="column">寫入指定欄位</label>
@@ -39,8 +39,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script>
     var list = [];
-    var maxNum = 10;
-    var minNum = 1;
+    var maxNum = 100;
+    var minNum = 2;
     var counter = 0;
     var column = 'E';
     var runner = google.script.run;
@@ -73,8 +73,8 @@
     var reset = function() {
        runner.withSuccessHandler().resetUserData();
        list = [];
-       maxNum = 10;
-       minNum = 1;
+       maxNum = 100;
+       minNum = 2;
        counter = 0;
        column = 'E';
        $('#min').val(minNum);
