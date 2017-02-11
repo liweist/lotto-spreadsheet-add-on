@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <base target="_top">
+  </head>
+  <body>
+    <div style="padding: 10px;">
+      <h2 id="to">準備抽獎</h2>
+      <button class="action" onClick="go()">抽獎</button>
+    </div>
+    <p></p>
+    <hr>
+    <div class="form-group">
+      <input type="checkbox" id="isWriteToColumn" checked>
+      <label for="isWriteToColumn">將#序號寫入指定欄位</label>
+    </div>
+    <p></p>
+    <div class="inline form-group">
+      <label for="min">從第</label>
+      <input type="text" id="min" value="1" style="width: 60px;"/>
+    </div>
+    <div class="inline form-group">
+      <label for="max">到第</label>
+      <input type="text" id="max" value="10" style="width: 60px;"/>
+    </div>
+    <div class="inline form-group">
+      <label id="col" for="column">寫入指定欄位</label>
+      <input type="text" id="column" value="E" style="width: 80px;"/>
+    </div>
+    <p></p>
+    <div class="form-group">
+      <button class="create" onClick="reset()">重置所有設定</button>
+    </div>
+    <div>
+      <p class="gray">程式設計 by liweist (liweist.william@gmail.com)</p>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script>
+    var list = [];
+    var maxNum = 10;
+    var minNum = 1;
+    var counter = 0;
+    var column = 'E';
+    var runner = google.script.run;
+
+    function onload(data) {
+      if (!$.isEmptyObject(data)) {
+        list = JSON.parse(data.list);
+        maxNum = data.maxNum;
+        minNum = data.minNum;
+        counter = data.counter;
+        column = data.writeColumn;
+        $('#min').val(minNum);
+        $('#max').val(maxNum);
+        $('#column').val(column);
+        $('#isWriteToColumn').prop('checked', JSON.parse(data.isWriteToColumn));
+      }
+    };
+
+    runner.withSuccessHandler(onload).getUserData();
+
+    var setNum = function() {
+       minNum = parseInt($('#min').val());
+       maxNum = parseInt($('#max').val());
+    }
+
+    var setColumn = function() {
+       column = $('#column').val();
+    }
+
+    var reset = function() {
+       runner.withSuccessHandler().resetUserData();
+       list = [];
+       maxNum = 10;
+       minNum = 1;
+       counter = 0;
+       column = 'E';
+       $('#min').val(minNum);
+       $('#max').val(maxNum);
+       $('#column').val(column);
+       $('#isWriteToColumn').prop('checked', true);
+    }
+
+    var go = function() {
+       setNum();
+       setColumn();
+       var isWriteToColumn = $('#isWriteToColumn').prop('checked');
+       var id = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+
+       if (_.indexOf(list, id) === -1) {
+         counter++;
+         list.push(id);
+         $('#to').text("#" + counter + " 恭喜第 " + id + " 號中獎！");
+         var listJson = JSON.stringify(list);
+         runner.withSuccessHandler().lotto((column + id), counter, isWriteToColumn, column, listJson, minNum, maxNum);
+       } else {
+         $('#to').text("重複了，請重抽！");
+       }
+    };
+    </script>
+  </body>
+</html>
