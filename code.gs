@@ -1,5 +1,15 @@
+function onInstall(e) {
+  onOpen(e);
+}
+
+function onOpen(e) {
+  SpreadsheetApp.getUi().createAddonMenu()
+      .addItem('打開表單抽獎程式', 'main')
+      .addToUi();
+}
+
 function main() {
- var html = HtmlService.createHtmlOutputFromFile('index');
+  var html = HtmlService.createHtmlOutputFromFile('index');
   html.setWidth(250);
   html.setHeight(310);
   SpreadsheetApp.getUi().showModelessDialog(html, '表單抽獎程式');
